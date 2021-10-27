@@ -3,13 +3,14 @@ package com.atguigu.educenter.controller;
 
 import com.atguigu.commonutils.JwtUtils;
 import com.atguigu.commonutils.R;
+import com.atguigu.commonutils.ordervo.UcenterMemberOrder;
 import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.entity.vo.LoginVo;
 import com.atguigu.educenter.entity.vo.RegisterVo;
 import com.atguigu.educenter.service.UcenterMemberService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,5 +57,21 @@ public class UcenterMemberController {
         UcenterMember member = memberService.getById(memberId);
         return R.ok().data("userInfo",member);
     }
+
+    /**
+     * 根据id获取用户信息
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据id获取用户信息")
+    @PostMapping("getUserInfoOrder/{id}")
+    public UcenterMemberOrder getUserInfoOrder(@PathVariable String id){
+        UcenterMember member = memberService.getById(id);
+        UcenterMemberOrder memberOrder = new UcenterMemberOrder();
+        BeanUtils.copyProperties(member,memberOrder);
+        return memberOrder;
+    }
+
+
 }
 

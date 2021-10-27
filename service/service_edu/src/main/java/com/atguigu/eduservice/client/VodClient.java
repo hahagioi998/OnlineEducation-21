@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "service-vod", fallback = VodFileDegradeFeignClient.class)
 public interface VodClient {
 
-    @DeleteMapping("deleteVideoByVideoId/{videoId}")
+    @DeleteMapping("/eduVod/video/deleteVideoByVideoId/{videoId}")
     R deleteVideoByVideoId(@PathVariable("videoId") String videoId);
 }

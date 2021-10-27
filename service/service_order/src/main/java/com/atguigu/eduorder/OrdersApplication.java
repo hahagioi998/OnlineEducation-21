@@ -1,26 +1,26 @@
-package com.atguigu.vod;
+package com.atguigu.eduorder;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * @ClassName VodApplication
+ * @ClassName OrdersApplication
  * @Description TODO
  * @Author lishan
- * @DATE 2021-10-20 14:50
+ * @DATE 2021-10-27 14:21
  * @Version 1.0
  */
-                            //不加载数据库默认配置
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-@ComponentScan(basePackages = {"com.atguigu"})
+@SpringBootApplication
+@ComponentScan(basePackages = "com.atguigu")
+@MapperScan("com.atguigu.eduorder.mapper")
 @EnableDiscoveryClient
-@EnableFeignClients//服务调用
-public class VodApplication {
+@EnableFeignClients
+public class OrdersApplication {
     public static void main(String[] args) {
-        SpringApplication.run(VodApplication.class);
+        SpringApplication.run(OrdersApplication.class,args);
     }
 }
