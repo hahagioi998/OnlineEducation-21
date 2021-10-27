@@ -2,6 +2,9 @@ package com.atguigu.eduservice.service.impl;
 
 import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.EduCourseDescription;
+import com.atguigu.eduservice.entity.EduTeacher;
+import com.atguigu.eduservice.entity.frontvo.CourseVo;
+import com.atguigu.eduservice.entity.frontvo.CourseWebVo;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CoursePublishVo;
 import com.atguigu.eduservice.mapper.EduCourseMapper;
@@ -10,10 +13,17 @@ import com.atguigu.eduservice.service.EduCourseDescriptionService;
 import com.atguigu.eduservice.service.EduCourseService;
 import com.atguigu.eduservice.service.EduVideoService;
 import com.atguigu.servicebase.handler.selfexception.GuliException;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -109,4 +119,51 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             throw new GuliException(20001,"删除失败！");
         }
     }
+
+    @Override
+    public Map<String, Object> getCourseList(Page<EduCourse> pageCourse, CourseVo courseVo) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        if(!StringUtils.isEmpty(courseVo.getSubjectParentId())){
+            wrapper.eq("subject_parent_id",courseVo.getSubjectParentId());
+        }
+        if(!StringUtils.isEmpty(courseVo.getSubjectId())){
+            wrapper.eq("subject_id",courseVo.getSubjectId());
+        }
+        if(!StringUtils.isEmpty(courseVo.getBuyCountSort())){
+            wrapper.orderByDesc("buy_count");
+        }
+        if(!StringUtils.isEmpty(courseVo.getGmtCreateSort())){
+            wrapper.orderByDesc("gmt_create");
+        }
+        if(!StringUtils.isEmpty(courseVo.getPriceSort())){
+            wrapper.orderByDesc("price");
+        }
+        baseMapper.selectPage(pageCourse,wrapper);
+
+        Map<String,Object> map = new HashMap<>();
+        long size = pageCourse.getSize();
+        long current = pageCourse.getCurrent();
+        long total = pageCourse.getTotal();
+        long pages = pageCourse.getPages();
+        boolean hasNext = pageCourse.hasNext();
+        boolean hasPrevious = pageCourse.hasPrevious();
+
+        List<EduCourse> records = pageCourse.getRecords();
+
+        map.put("size",size);
+        map.put("current",current);
+        map.put("total",total);
+        map.put("pages",pages);
+        map.put("records",records);
+        map.put("hasNext",hasNext);
+        map.put("hasPrevious",hasPrevious);
+        return map;
+    }
+
+    @Override
+    public CourseWebVo getBaseCourseInfoById(String courseId) {
+
+        return baseMapper.getBaseCourseInfoById(courseId);
+    }
+
 }

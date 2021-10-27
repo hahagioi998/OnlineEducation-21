@@ -1,6 +1,7 @@
 package com.atguigu.eduservice.mapper;
 
 import com.atguigu.eduservice.entity.EduCourse;
+import com.atguigu.eduservice.entity.frontvo.CourseWebVo;
 import com.atguigu.eduservice.entity.vo.CoursePublishVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Component;
@@ -15,4 +16,6 @@ import org.springframework.stereotype.Component;
  */
 public interface EduCourseMapper extends BaseMapper<EduCourse> {
     CoursePublishVo getPublishCourseInfo(String courseId);
+    CourseWebVo getBaseCourseInfoById(String courseId);
+
 }

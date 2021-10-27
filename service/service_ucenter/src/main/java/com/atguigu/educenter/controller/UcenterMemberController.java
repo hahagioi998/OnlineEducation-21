@@ -50,11 +50,11 @@ public class UcenterMemberController {
      * @return
      */
     @ApiOperation(value = "根据token获取登录信息")
-    @GetMapping("getMeberById")
+    @GetMapping("getMemberById")
     public R getMeberById(HttpServletRequest request){
         String memberId = JwtUtils.getMemberIdByJwtToken(request);
         UcenterMember member = memberService.getById(memberId);
-        return R.ok().data("memberInfo",member);
+        return R.ok().data("userInfo",member);
     }
 }
 
