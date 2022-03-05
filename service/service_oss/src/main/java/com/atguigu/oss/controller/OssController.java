@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/eduOss/fileOss")
-@CrossOrigin
 public class OssController {
 
     @Autowired

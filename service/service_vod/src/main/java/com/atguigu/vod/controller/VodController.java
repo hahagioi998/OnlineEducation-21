@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/eduVod/video")
-@CrossOrigin
 public class VodController {
 
     @Autowired

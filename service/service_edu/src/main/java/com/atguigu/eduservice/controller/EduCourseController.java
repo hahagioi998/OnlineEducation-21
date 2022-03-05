@@ -8,6 +8,7 @@ import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CoursePublishVo;
 import com.atguigu.eduservice.entity.vo.TeachQuery;
 import com.atguigu.eduservice.service.EduCourseService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/eduservice/edu-course")
-@CrossOrigin
 public class EduCourseController {
 
     @Autowired
@@ -44,22 +44,22 @@ public class EduCourseController {
         //创建Page对象
         Page<EduCourse> pageCourse = new Page<>(current,limit);
         //构造条件
-        QueryWrapper<EduCourse> wrapper = new QueryWrapper();
+        LambdaQueryWrapper<EduCourse> wrapper = new LambdaQueryWrapper<>();
         String title = course.getTitle();
         Integer lessonNum = course.getLessonNum();
         Date gmtCreate = course.getGmtCreate();
         Integer status = course.getStatus();
         if(!StringUtils.isEmpty(title)){
-            wrapper.like("title",title);
+            wrapper.like(EduCourse::getTitle,title);
         }
         if(!StringUtils.isEmpty(status)){
-            wrapper.like("status",status);
+            wrapper.like(EduCourse::getStatus,status);
         }
         if(!StringUtils.isEmpty(lessonNum)){
-            wrapper.like("lessonNum",lessonNum);
+            wrapper.like(EduCourse::getLessonNum,lessonNum);
         }
         if(!StringUtils.isEmpty(gmtCreate)){
-            wrapper.like("gmtCreate",gmtCreate);
+            wrapper.like(EduCourse::getGmtCreate,gmtCreate);
         }
         //调用方法实现条件查询分页
         courseService.page(pageCourse, wrapper);
